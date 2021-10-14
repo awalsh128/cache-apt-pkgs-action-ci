@@ -1,0 +1,98 @@
+name: Staging Pull Request Tests
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [staging_pull_request]
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    name: Install and cache.
+    steps:    
+      - uses: actions/checkout@v2
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: xdot rolldice
+      - if: steps.cache-apt-pkgs.outputs.cache-hit == 'true'
+        run: exit 1
+
+  restore:
+    needs: install
+    runs-on: ubuntu-latest
+    name: Verify cached installs.
+    steps:
+      - uses: actions/checkout@v2
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: xdot rolldice
+      - if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
+        run: exit 1
+
+  restore_with_packages_out_of_order:
+    needs: install
+    runs-on: ubuntu-latest
+    name: Cache hit with packages out of order.
+    steps:    
+      - uses: actions/checkout@v2
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: rolldice xdot
+      - if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
+        run: exit 1
+
+  add_package:
+    needs: install
+    runs-on: ubuntu-latest
+    name: Add another install and cache.
+    steps:
+      - uses: actions/checkout@v2
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: xdot rolldice distro-info-data
+      - if: steps.cache-apt-pkgs.outputs.cache-hit == 'true'
+        run: exit 1
+
+  restore_add_package:
+    needs: add_package
+    runs-on: ubuntu-latest
+    name: Verify added and cached install.
+    steps:
+      - uses: actions/checkout@v2
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: xdot rolldice distro-info-data
+      - if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
+        run: exit 1
+  
+  no_packages:
+    runs-on: ubuntu-latest
+    name: No packages passed.
+    steps:
+      - name: Execute
+        id: execute
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: ''
+        continue-on-error: true
+      - name: Verify
+        if: steps.execute.outcome == 'failure'
+        run: exit 0
+
+  package_not_found:
+    runs-on: ubuntu-latest
+    name: Package not found.
+    steps:
+      - name: Execute
+        id: execute
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: package_that_doesnt_exist
+        continue-on-error: true
+      - name: Verify
+        if: steps.execute.outcome == 'failure'
+        run: exit 0
