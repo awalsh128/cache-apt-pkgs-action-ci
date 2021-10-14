@@ -1,4 +1,4 @@
-name: Staging Pull Request Tests
+name: Staging Tests
 on:
   workflow_dispatch:
   repository_dispatch:
