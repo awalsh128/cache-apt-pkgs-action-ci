@@ -14,8 +14,10 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice
-      - if: steps.cache-apt-pkgs.outputs.cache-hit == 'true'
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.cache-hit == 'true'
         run: exit 1
+        shell: bash
 
   restore:
     needs: install
@@ -27,8 +29,10 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice
-      - if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
         run: exit 1
+        shell: bash
 
   restore_with_packages_out_of_order:
     needs: install
@@ -40,8 +44,10 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: rolldice xdot
-      - if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
         run: exit 1
+        shell: bash
 
   add_package:
     needs: install
@@ -53,8 +59,10 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice distro-info-data
-      - if: steps.cache-apt-pkgs.outputs.cache-hit == 'true'
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.cache-hit == 'true'
         run: exit 1
+        shell: bash
 
   restore_add_package:
     needs: add_package
@@ -66,8 +74,10 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice distro-info-data
-      - if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
         run: exit 1
+        shell: bash
   
   no_packages:
     runs-on: ubuntu-latest
@@ -82,6 +92,7 @@ jobs:
       - name: Verify
         if: steps.execute.outcome == 'failure'
         run: exit 0
+        shell: bash
 
   package_not_found:
     runs-on: ubuntu-latest
@@ -96,3 +107,4 @@ jobs:
       - name: Verify
         if: steps.execute.outcome == 'failure'
         run: exit 0
+        shell: bash
