@@ -2,7 +2,7 @@ name: Staging Tests
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [staging_pull_request]
+    types: [staging_push]
 
 jobs:
   install:
