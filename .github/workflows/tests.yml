@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: [staging_push]
+  push:
 
 jobs:
   install:
