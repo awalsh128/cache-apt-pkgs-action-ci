@@ -8,12 +8,13 @@ jobs:
   install:
     runs-on: ubuntu-latest
     name: Install and cache.
-    steps:    
+    steps:
       - uses: actions/checkout@v2
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice
+          version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit == 'true'
         run: exit 1
@@ -29,6 +30,7 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice
+          version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
         run: exit 1
@@ -38,12 +40,13 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     name: Cache hit with packages out of order.
-    steps:    
+    steps:
       - uses: actions/checkout@v2
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: rolldice xdot
+          version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
         run: exit 1
@@ -59,6 +62,7 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice distro-info-data
+          version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit == 'true'
         run: exit 1
@@ -74,11 +78,12 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice distro-info-data
+          version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
         run: exit 1
         shell: bash
-  
+
   no_packages:
     runs-on: ubuntu-latest
     name: No packages passed.
@@ -87,7 +92,7 @@ jobs:
         id: execute
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
-          packages: ''
+          packages: ""
         continue-on-error: true
       - name: Verify
         if: steps.execute.outcome == 'failure'
