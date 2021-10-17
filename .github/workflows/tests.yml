@@ -8,7 +8,7 @@ on:
 jobs:
   install:
     runs-on: ubuntu-latest
-    name: Install and cache.
+    name: Install package and cache.
     steps:
       - uses: actions/checkout@v2
       - id: cache-apt-pkgs
@@ -21,10 +21,25 @@ jobs:
         run: exit 1
         shell: bash
 
+  intall_with_new_version:
+    runs-on: ubuntu-latest
+    name: Install packages with new version.
+    steps:
+      - uses: actions/checkout@v2
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: xdot rolldice
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-2
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
+        run: exit 1
+        shell: bash
+
   restore:
     needs: install
     runs-on: ubuntu-latest
-    name: Verify cached installs.
+    name: Restore cached packages.
     steps:
       - uses: actions/checkout@v2
       - id: cache-apt-pkgs
@@ -40,7 +55,7 @@ jobs:
   restore_with_packages_out_of_order:
     needs: install
     runs-on: ubuntu-latest
-    name: Cache hit with packages out of order.
+    name: Restore with packages out of order.
     steps:
       - uses: actions/checkout@v2
       - id: cache-apt-pkgs
@@ -56,7 +71,7 @@ jobs:
   add_package:
     needs: install
     runs-on: ubuntu-latest
-    name: Add another install and cache.
+    name: Add another package.
     steps:
       - uses: actions/checkout@v2
       - id: cache-apt-pkgs
@@ -72,7 +87,7 @@ jobs:
   restore_add_package:
     needs: add_package
     runs-on: ubuntu-latest
-    name: Verify added and cached install.
+    name: Restore added package.
     steps:
       - uses: actions/checkout@v2
       - id: cache-apt-pkgs
