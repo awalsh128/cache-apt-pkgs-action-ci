@@ -114,3 +114,19 @@ jobs:
         if: steps.execute.outcome == 'failure'
         run: exit 0
         shell: bash
+
+  version_contains_spaces:
+    runs-on: ubuntu-latest
+    name: Version contains spaces.
+    steps:
+      - name: Execute
+        id: execute
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: xdot
+          version: 123 abc
+        continue-on-error: true
+      - name: Verify
+        if: steps.execute.outcome == 'failure'
+        run: exit 0
+        shell: bash
