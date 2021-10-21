@@ -6,6 +6,21 @@ on:
   push:
 
 jobs:
+  list_versions:
+    runs-on: ubuntu-latest
+    name: List package versions.
+    steps:
+      - uses: actions/checkout@v2
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: xdot
+          version: list_versions_test
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.package_version_list = 'xdot:1.1-2'
+        run: exit 1
+        shell: bash
+
   install:
     runs-on: ubuntu-latest
     name: Install package and cache.
@@ -30,7 +45,24 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice
-          version: ${{ github.run_id }}-${{ github.run_attempt }}-2
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-new_version
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
+        run: exit 1
+        shell: bash
+
+  intall_with_new_version_refresh:
+    needs: intall_with_new_version
+    runs-on: ubuntu-latest
+    name: Refresh installed and cached packages.
+    steps:
+      - uses: actions/checkout@v2
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: xdot rolldice
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-new_version
+          refresh: true
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
         run: exit 1
