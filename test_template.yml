@@ -64,7 +64,7 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}-new_version
           refresh: true
       - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
+        if: steps.cache-apt-pkgs.outputs.cache-hit == 'false'
         run: exit 1
         shell: bash
 
