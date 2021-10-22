@@ -19,8 +19,8 @@ jobs:
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit == 'false' || steps.cache-apt-pkgs.outputs.package_version_list != 'xdot:1.1-2,rolldice:1.16-1build1'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }} 
-          echo "package_version_list = ${{ steps.cache-apt-pkgs.outputs.package_version_list }}
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}" 
+          echo "package_version_list = ${{ steps.cache-apt-pkgs.outputs.package_version_list }}"
           exit 1
         shell: bash
 
@@ -37,7 +37,7 @@ jobs:
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           exit 1
         shell: bash
 
@@ -54,7 +54,7 @@ jobs:
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           exit 1
         shell: bash
 
@@ -73,7 +73,7 @@ jobs:
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           exit 1
         shell: bash
 
@@ -91,7 +91,7 @@ jobs:
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           exit 1
         shell: bash
 
@@ -109,7 +109,7 @@ jobs:
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           exit 1
         shell: bash
 
@@ -127,7 +127,7 @@ jobs:
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           exit 1
         shell: bash
 
@@ -145,7 +145,7 @@ jobs:
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           exit 1
         shell: bash
 
