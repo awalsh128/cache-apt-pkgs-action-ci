@@ -15,7 +15,7 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice
-          version: list_versions_test
+          version: list_versions_test_v2
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit == 'false' || steps.cache-apt-pkgs.outputs.package_version_list != 'xdot:1.1-2,rolldice:1.16-1build1'
         run: |
