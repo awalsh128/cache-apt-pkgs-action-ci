@@ -17,8 +17,11 @@ jobs:
           packages: xdot rolldice
           version: list_versions_test
       - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.package_version_list != 'xdot:1.1-2,rolldice:1.16-1build1'
-        run: exit 1
+        if: steps.cache-apt-pkgs.outputs.cache-hit == 'false' || steps.cache-apt-pkgs.outputs.package_version_list != 'xdot:1.1-2,rolldice:1.16-1build1'
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }} 
+          echo "package_version_list = ${{ steps.cache-apt-pkgs.outputs.package_version_list }}
+          exit 1
         shell: bash
 
   install:
@@ -33,7 +36,9 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
-        run: exit 1
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          exit 1
         shell: bash
 
   intall_with_new_version:
@@ -48,7 +53,9 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}-new_version
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
-        run: exit 1
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          exit 1
         shell: bash
 
   intall_with_new_version_refresh:
@@ -65,7 +72,9 @@ jobs:
           refresh: true
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
-        run: exit 1
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          exit 1
         shell: bash
 
   restore:
@@ -81,7 +90,9 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
-        run: exit 1
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          exit 1
         shell: bash
 
   restore_with_packages_out_of_order:
@@ -97,7 +108,9 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
-        run: exit 1
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          exit 1
         shell: bash
 
   add_package:
@@ -113,7 +126,9 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
-        run: exit 1
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          exit 1
         shell: bash
 
   restore_add_package:
@@ -129,7 +144,9 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
-        run: exit 1
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}          
+          exit 1
         shell: bash
 
   no_packages:
