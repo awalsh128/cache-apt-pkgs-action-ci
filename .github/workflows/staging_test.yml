@@ -15,12 +15,12 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: xdot rolldice
-          version: list_versions_test_v2
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-list-package_versions
       - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit == 'false' || steps.cache-apt-pkgs.outputs.package_version_list != 'xdot:1.1-2,rolldice:1.16-1build1'
+        if: steps.cache-apt-pkgs.outputs.cache-hit == 'false' || steps.cache-apt-pkgs.outputs.package-version-list != 'xdot:1.1-2,rolldice:1.16-1build1'
         run: |
           echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}" 
-          echo "package_version_list = ${{ steps.cache-apt-pkgs.outputs.package_version_list }}"
+          echo "package-version-list = ${{ steps.cache-apt-pkgs.outputs.package-version-list }}"
           exit 1
         shell: bash
 
