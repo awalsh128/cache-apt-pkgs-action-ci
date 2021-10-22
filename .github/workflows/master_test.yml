@@ -14,10 +14,10 @@ jobs:
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@master
         with:
-          packages: xdot
+          packages: xdot rolldice
           version: list_versions_test
       - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.package_version_list == 'xdot:1.1-2'
+        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.package_version_list == 'xdot:1.1-2,rolldice:1.16-1build1'
         run: exit 1
         shell: bash
 
@@ -64,7 +64,7 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}-new_version
           refresh: true
       - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
+        if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
         run: exit 1
         shell: bash
 
