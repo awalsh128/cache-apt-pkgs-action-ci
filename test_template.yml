@@ -35,9 +35,10 @@ jobs:
           packages: xdot rolldice
           version: ${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
+        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.cache-key != format('{{rolldice=1.16-1build1 xdot=1.1-2 @ {0}-{1}}}', github.run_id, github.run_attempt)
         run: |
           echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
+          echo "cache-key = ${{ steps.cache-apt-pkgs.outputs.cache-key }}"
           exit 1
         shell: bash
 
