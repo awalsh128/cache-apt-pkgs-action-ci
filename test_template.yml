@@ -117,7 +117,7 @@ jobs:
       - id: check-cache-hash
         run: |
           # Generate and check the hash key and compare it against the one provided
-          value="rolldice=1.16-1build1 xdot=1.1-2 @ ${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          value="rolldice=1.16-1build1 xdot=1.1-2 @ ${{ github.run_id }}}-${{ github.run_attempt }}}"
           key=$(echo "${value}" | md5sum | /bin/cut -f1 -d' ')
           echo "::set-output name=calculated-cache-key::${key}"
           echo "::set-output name=cache-key-matches::$([ "${key}" == "${{ steps.cache-apt-pkgs.outputs.cache-key }}" ] && echo "true" || echo "false")"
