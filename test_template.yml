@@ -34,29 +34,10 @@ jobs:
         with:
           packages: xdot rolldice
           version: ${{ github.run_id }}-${{ github.run_attempt }}
-      - id: check-additional-pkg-dir
-        run: |
-          # xdot requires python3-numpy so check that it was installed
-          echo "::set-output name=numpy-exists::$([ -d "/usr/lib/python3/dist-packages/numpy" ] && echo "true" || echo "false")"
-          echo "::set-output name=cached-pkgs::$(ls -1 ${cache_dir}/*.tar.gz | sort)"
-          echo "::set-output name=cached-pkg-count::$(ls -1 ${cache_dir}/*.tar.gz | wc -w)"
-        shell: bash
-      - id: check-cache-hash
-        run: |
-          # Generate and check the hash key and compare it against the one provided
-          value="rolldice=1.16-1build1 xdot=1.1-2 @ ${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-          key=$(echo "${value}" | md5sum | /bin/cut -f1 -d' ')
-          echo "::set-output name=calculated-cache-key::${key}"
-          echo "::set-output name=cache-key-matches::$([ "${key}" == "${{ steps.cache-apt-pkgs.outputs.cache-key }}" ] && echo "true" || echo "false")"
-        shell: bash
       - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.check-additional-pkg-dir.outputs.numpy-exists == 'false' || steps.check-cache-hash.outputs.cache-key-matches == 'false'
+        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
         run: |
           echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
-          echo "cached-pkg-count = ${{ steps.check-additional-pkg-dir.outputs.cached-pkg-count }}"
-          echo "cached-pkgs = ${{ steps.check-additional-pkg-dir.outputs.cached-pkgs }}"
-          echo "calculated-cache-key = ${{ steps.check-cache-hash.outputs.calculated-cache-key }}"
-          echo "cache-key = ${{ steps.cache-apt-pkgs.outputs.cache-key }}"
           exit 1
         shell: bash
 
@@ -107,29 +88,10 @@ jobs:
         with:
           packages: xdot rolldice
           version: ${{ github.run_id }}-${{ github.run_attempt }}
-      - id: check-additional-pkg-dir
-        run: |
-          # xdot requires python3-numpy so check that it was restored
-          echo "::set-output name=numpy-exists::$([ -d "/usr/lib/python3/dist-packages/numpy" ] && echo "true" || echo "false")"
-          echo "::set-output name=cached-pkgs::$(ls -1 ${cache_dir}/*.tar.gz | sort)"
-          echo "::set-output name=cached-pkg-count::$(ls -1 ${cache_dir}/*.tar.gz | wc -w)"
-        shell: bash
-      - id: check-cache-hash
-        run: |
-          # Generate and check the hash key and compare it against the one provided
-          value="rolldice=1.16-1build1 xdot=1.1-2 @ ${{ github.run_id }}}-${{ github.run_attempt }}}"
-          key=$(echo "${value}" | md5sum | /bin/cut -f1 -d' ')
-          echo "::set-output name=calculated-cache-key::${key}"
-          echo "::set-output name=cache-key-matches::$([ "${key}" == "${{ steps.cache-apt-pkgs.outputs.cache-key }}" ] && echo "true" || echo "false")"
-        shell: bash
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
         run: |
           echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
-          echo "cached-pkg-count = ${{ steps.check-additional-pkg-dir.outputs.cached-pkg-count }}"
-          echo "cached-pkgs = ${{ steps.check-additional-pkg-dir.outputs.cached-pkgs }}"
-          echo "calculated-cache-key = ${{ steps.check-cache-hash.outputs.calculated-cache-key }}"
-          echo "cache-key = ${{ steps.cache-apt-pkgs.outputs.cache-key }}"
           exit 1
         shell: bash
 
