@@ -17,7 +17,7 @@ jobs:
           packages: xdot rolldice
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-package-versions
       - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.package-version-list != 'xdot:1.1-2,rolldice:1.16-1build1'
+        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.package-version-list != 'rolldice:1.16-1build1,xdot:1.1-2'
         run: |
           echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}" 
           echo "package-version-list = ${{ steps.cache-apt-pkgs.outputs.package-version-list }}"
