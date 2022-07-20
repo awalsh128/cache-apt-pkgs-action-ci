@@ -17,7 +17,7 @@ jobs:
           packages: xdot
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-all-package-versions
       - name: Verify      
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.all-package-version-list != 'gir1.2-freedesktop,gir1.2-gdkpixbuf-2.0,gir1.2-gtk-3.0,gir1.2-pango-1.0,libpangoxft-1.0-0,python3-cairo,python3-gi-cairo,xdot'
+        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.all-package-version-list != 'gir1.2-atk-1.0:2.35.1-1ubuntu2,gir1.2-gtk-3.0:3.24.20-0ubuntu1.1,gir1.2-pango-1.0:1.44.7-2ubuntu4,graphviz:2.42.2-3build2,libann0:1.1.2+doc-7build1,libcdt5:2.42.2-3build2,libcgraph6:2.42.2-3build2,libgts-0.7-5:0.7.6+darcs121130-4,libgts-bin:0.7.6+darcs121130-4,libgvc6:2.42.2-3build2,libgvpr2:2.42.2-3build2,liblab-gamut1:2.42.2-3build2,libpangoxft-1.0-0:1.44.7-2ubuntu4,libpathplan4:2.42.2-3build2,python3-cairo:1.16.2-2ubuntu2,python3-gi-cairo:3.36.0-1,xdot:1.1-2'
         run: |
           echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           echo "package-version-list = ${{ steps.cache-apt-pkgs.outputs.package-version-list }}"
