@@ -60,7 +60,18 @@ jobs:
           exit 1
         shell: bash
 
-  intall_with_new_version:
+  reinstall_existing:
+    runs-on: ubuntu-latest
+    name: Reinstall existing package (regression issue \#36).
+    steps:
+      - uses: actions/checkout@v2
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@dev
+        with:
+          packages: libgtk-3-dev
+          version: ${{ github.run_id }}-${{ github.run_attempt }}
+
+  install_with_new_version:
     runs-on: ubuntu-latest
     name: Install packages with new version.
     steps:
@@ -77,7 +88,7 @@ jobs:
           exit 1
         shell: bash
 
-  intall_with_new_version_refresh:
+  install_with_new_version_refresh:
     needs: intall_with_new_version
     runs-on: ubuntu-latest
     name: Refresh installed and cached packages.
