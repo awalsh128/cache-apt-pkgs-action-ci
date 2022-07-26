@@ -89,7 +89,7 @@ jobs:
         shell: bash
 
   install_with_new_version_refresh:
-    needs: intall_with_new_version
+    needs: install_with_new_version
     runs-on: ubuntu-latest
     name: Refresh installed and cached packages.
     steps:
