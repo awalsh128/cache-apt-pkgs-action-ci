@@ -210,7 +210,7 @@ jobs:
 
   regression_37:
     runs-on: ubuntu-latest
-    name: Find
+    name: Install with reported package dependencies not installed (regression issue \#37).
     steps:
       - uses: actions/checkout@v2
       - id: cache-apt-pkgs
