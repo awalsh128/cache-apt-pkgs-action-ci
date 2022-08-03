@@ -60,6 +60,24 @@ jobs:
           exit 1
         shell: bash 
 
+  install_with_new_version:
+    needs: install
+    runs-on: ubuntu-latest
+    name: Install packages with new version.
+    steps:
+      - uses: actions/checkout@v2
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: xdot rolldice
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-new_version
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
+          exit 1
+        shell: bash
+
   install_with_new_version_refresh:
     needs: install_with_new_version
     runs-on: ubuntu-latest
