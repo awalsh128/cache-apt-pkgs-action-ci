@@ -3,8 +3,8 @@ on:
   workflow_dispatch:
     inputs:
       regression_44_snapshot_filesystem_layout:
-        name: "Regression #44: Snapshot Filesystem Layout"
-        description: "Perform the expensive operation of capturing the filesystem layout during the test."
+        # Perform the expensive operation of capturing the filesystem layout during the test.
+        description: "Regression #44: Snapshot Filesystem Layout"
         required: true
         default: false
         type: boolean 
