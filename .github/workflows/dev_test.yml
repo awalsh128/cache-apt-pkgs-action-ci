@@ -260,7 +260,8 @@ jobs:
       - name: Snapshot filesystem layout.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
         run: |
-          find / > filesystem_snapshot_install.log
+          find / 2> /dev/null > filesystem_snapshot_install.log
+          exit 0
         shell: bash
       - name: Upload filesystem layout snapshot.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
@@ -282,7 +283,8 @@ jobs:
       - name: Snapshot filesystem layout.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
         run: |
-          find / > filesystem_snapshot_restore.log
+          find / 2> /dev/null > filesystem_snapshot_restore.log
+          exit 0
         shell: bash
       - name: Upload filesystem layout snapshot.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
