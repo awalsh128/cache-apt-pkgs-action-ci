@@ -1,22 +1,15 @@
 #!/bin/bash -x
 
+set -e
+
 source_branch="master"
 target_branch="${1}"  # replaced 
 
-repo_dir="/tmp/cache-apt-pkgs-action"
-rm -fr ${repo_dir}
-cd "/tmp"
-git clone https://github.com/awalsh128/cache-apt-pkgs-action
-cd "${repo_dir}"
+# Include library.
+source "$(dirname -- $(realpath -- ${0}))/lib.sh"
 
-while true; do
-  read -p "Do you want to push the branch reset? [Y|n] " continue_push
-  case ${continue_push} in
-    [Yy]*) break;;
-    [Nn]*) exit;;
-    *) echo "Invalid option selected.";;
-  esac
-done
+clone_repo_and_cd
+confirm_prompt "Do you want to push the branch reset?"
 
 # Delete locally
 git branch --delete ${target_branch}
