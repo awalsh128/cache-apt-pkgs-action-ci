@@ -1,6 +1,13 @@
 name: Master Tests
 on:
   workflow_dispatch:
+    inputs:
+      regression_44_snapshot_filesystem_layout:
+        name: "Regression #44: Snapshot Filesystem Layout"
+        description: "Perform the expensive operation of capturing the filesystem layout during the test."
+        required: true
+        default: false
+        type: boolean 
   repository_dispatch:
     types: [master_push]
   push:
@@ -17,7 +24,9 @@ jobs:
           packages: xdot
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-all-package-versions
       - name: Verify      
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.all-package-version-list != 'gir1.2-atk-1.0:2.35.1-1ubuntu2,gir1.2-gtk-3.0:3.24.20-0ubuntu1.1,gir1.2-pango-1.0:1.44.7-2ubuntu4,graphviz:2.42.2-3build2,libann0:1.1.2+doc-7build1,libcdt5:2.42.2-3build2,libcgraph6:2.42.2-3build2,libgts-0.7-5:0.7.6+darcs121130-4,libgts-bin:0.7.6+darcs121130-4,libgvc6:2.42.2-3build2,libgvpr2:2.42.2-3build2,liblab-gamut1:2.42.2-3build2,libpangoxft-1.0-0:1.44.7-2ubuntu4,libpathplan4:2.42.2-3build2,python3-cairo:1.16.2-2ubuntu2,python3-gi-cairo:3.36.0-1,xdot:1.1-2'
+        if: |
+          steps.cache-apt-pkgs.outputs.cache-hit != 'false' || 
+          steps.cache-apt-pkgs.outputs.all-package-version-list != 'gir1.2-atk-1.0:2.35.1-1ubuntu2,gir1.2-gtk-3.0:3.24.20-0ubuntu1.1,gir1.2-pango-1.0:1.44.7-2ubuntu4,graphviz:2.42.2-3build2,libann0:1.1.2+doc-7build1,libcdt5:2.42.2-3build2,libcgraph6:2.42.2-3build2,libgts-0.7-5:0.7.6+darcs121130-4,libgts-bin:0.7.6+darcs121130-4,libgvc6:2.42.2-3build2,libgvpr2:2.42.2-3build2,liblab-gamut1:2.42.2-3build2,libpangoxft-1.0-0:1.44.7-2ubuntu4,libpathplan4:2.42.2-3build2,python3-cairo:1.16.2-2ubuntu2,python3-gi-cairo:3.36.0-1,xdot:1.1-2'
         run: |
           echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           echo "package-version-list = ${{ steps.cache-apt-pkgs.outputs.package-version-list }}"
@@ -217,7 +226,7 @@ jobs:
 
   regression_36:
     runs-on: ubuntu-latest
-    name: Reinstall existing package (regression issue \#36).
+    name: "Reinstall existing package (regression issue #36)."
     steps:
       - uses: actions/checkout@v2
       - id: cache-apt-pkgs
@@ -228,7 +237,7 @@ jobs:
 
   regression_37:
     runs-on: ubuntu-latest
-    name: Install with reported package dependencies not installed (regression issue \#37).
+    name: "Install with reported package dependencies not installed (regression issue #37)."
     steps:
       - uses: actions/checkout@v2
       - id: cache-apt-pkgs
@@ -236,3 +245,51 @@ jobs:
         with:
           packages: libosmesa6-dev libgl1-mesa-dev python3-tk pandoc git-restore-mtime
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_37
+
+  regression_44_install_and_cache:
+    runs-on: ubuntu-latest
+    name: "QEMU packages for specific arch (regression issue #44). Cache packages."
+    steps:
+      - uses: awalsh128/cache-apt-pkgs-action@master
+        with:
+          packages: qemu-system-arm qemu-efi qemu-user-static
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
+      - name: Confirm pre-existing correct behavior.
+        run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
+        shell: bash
+      - name: Snapshot filesystem layout.
+        if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
+        run: |
+          find / > filesystem_snapshot_install.log
+        shell: bash
+      - name: Upload filesystem layout snapshot.
+        if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: filesystem_snapshot_install
+          path: filesystem_snapshot_install.log
+
+  regression_44_restore_and_verify:
+    runs-on: ubuntu-latest
+    needs: regression_44_install_and_cache
+    name: "QEMU packages for specific arch (regression issue #44). Restore packages and verify."
+    steps:
+      - name: Restore
+        uses: awalsh128/cache-apt-pkgs-action@master
+        with:
+          packages: qemu-system-arm qemu-efi qemu-user-static
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
+      - name: Snapshot filesystem layout.
+        if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
+        run: |
+          find / > filesystem_snapshot_restore.log
+        shell: bash
+      - name: Upload filesystem layout snapshot.
+        if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: filesystem_snapshot_restore
+          path: filesystem_snapshot_restore.log
+      - name: Verify
+        run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
+        shell: bash
