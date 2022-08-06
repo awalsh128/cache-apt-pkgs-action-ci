@@ -258,14 +258,14 @@ jobs:
       - name: Snapshot filesystem layout.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
         run: |
-          find / > filesystem_snapshot.log
+          find / > filesystem_snapshot_install.log
         shell: bash
       - name: Upload filesystem layout snapshot.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
         uses: actions/upload-artifact@v3
         with:
-          name: filesystem_snapshot
-          path: filesystem_snapshot.log
+          name: filesystem_snapshot_install
+          path: filesystem_snapshot_install.log
 
   regression_44_restore_and_verify:
     runs-on: ubuntu-latest
@@ -280,14 +280,14 @@ jobs:
       - name: Snapshot filesystem layout.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
         run: |
-          find / > filesystem_snapshot.log
+          find / > filesystem_snapshot_restore.log
         shell: bash
       - name: Upload filesystem layout snapshot.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
         uses: actions/upload-artifact@v3
         with:
-          name: filesystem_snapshot
-          path: filesystem_snapshot.log
+          name: filesystem_snapshot_restore
+          path: filesystem_snapshot_restore.log
       - name: Verify
         run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
         shell: bash
