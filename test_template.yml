@@ -247,6 +247,9 @@ jobs:
         with:
           packages: qemu-system-arm qemu-efi qemu-user-static
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
+      - name: Confirm pre-existing correct behavior.
+        run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
+        shell: bash
 
   regression_44_restore_and_verify:
     runs-on: ubuntu-latest
@@ -260,4 +263,4 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
       - name: Verify
         run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
-        shell: bash        
+        shell: bash
