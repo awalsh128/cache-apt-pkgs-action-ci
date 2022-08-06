@@ -1,11 +1,12 @@
 name: $branch_upper$ Tests
 on:
   workflow_dispatch:
-    regression_44_snapshot_filesystem_layout:
-      description: Perform the expensive operation of capturing the filesystem layout during the test.
-      required: true
-      default: false
-      type: boolean 
+    inputs:
+      regression_44_snapshot_filesystem_layout:
+        description: Perform the expensive operation of capturing the filesystem layout during the test.
+        required: true
+        default: false
+        type: boolean 
   repository_dispatch:
     types: [$event_type$]
   push:
