@@ -259,9 +259,7 @@ jobs:
         shell: bash
       - name: Snapshot filesystem layout.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
-        run: |
-          find / 2> /dev/null > filesystem_snapshot_install.log
-          exit 0
+        run: find / 2> /dev/null > filesystem_snapshot_install.log || true
         shell: bash
       - name: Upload filesystem layout snapshot.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
@@ -282,9 +280,7 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
       - name: Snapshot filesystem layout.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
-        run: |
-          find / 2> /dev/null > filesystem_snapshot_restore.log
-          exit 0
+        run: find / 2> /dev/null > filesystem_snapshot_restore.log || true
         shell: bash
       - name: Upload filesystem layout snapshot.
         if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
