@@ -18,4 +18,4 @@ for t in $(git tag); do
   echo -e "$t\t$(git show $t | grep commit | awk '{print $2}')"
 done
 
-echo "Updated the `latest` tag to ${tag}."
+echo "Updated the 'latest' tag to ${tag}."
