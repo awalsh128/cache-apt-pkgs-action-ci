@@ -291,3 +291,12 @@ jobs:
       - name: Verify
         run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
         shell: bash
+
+  mplayer_install:
+    runs-on: ubuntu-latest
+    name: "Test issue #45 on latest release."
+    steps:
+      - uses: awalsh128/cache-apt-pkgs-action@dev
+        with:
+          packages: mplayer
+          version: ${{ github.run_id }}-${{ github.run_attempt }}
