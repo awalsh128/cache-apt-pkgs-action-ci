@@ -257,16 +257,6 @@ jobs:
       - name: Confirm pre-existing correct behavior.
         run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
         shell: bash
-      - name: Snapshot filesystem layout.
-        if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
-        run: find / 2> /dev/null > filesystem_snapshot_install.log || true
-        shell: bash
-      - name: Upload filesystem layout snapshot.
-        if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: filesystem_snapshot_install
-          path: filesystem_snapshot_install.log
 
   regression_44_restore_and_verify:
     runs-on: ubuntu-latest
@@ -278,25 +268,28 @@ jobs:
         with:
           packages: qemu-system-arm qemu-efi qemu-user-static
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
-      - name: Snapshot filesystem layout.
-        if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
-        run: find / 2> /dev/null > filesystem_snapshot_restore.log || true
-        shell: bash
-      - name: Upload filesystem layout snapshot.
-        if: ${{ inputs.regression_44_snapshot_filesystem_layout }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: filesystem_snapshot_restore
-          path: filesystem_snapshot_restore.log
       - name: Verify
         run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
         shell: bash
 
-  mplayer_install:
+  regression_44_restore_and_troubleshoot:
     runs-on: ubuntu-latest
-    name: "Test issue #45 on latest release."
+    needs: regression_44_install_and_cache
+    name: "QEMU packages for specific arch (regression issue #44). Restore packages and verify."
     steps:
-      - uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - name: Restore
+        uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
-          packages: mplayer
-          version: ${{ github.run_id }}-${{ github.run_attempt }}
+          packages: qemu-system-arm qemu-efi qemu-user-static
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
+      - name: Verify
+        run: >
+          for pkg in binfmt-support ipxe-qemu-256k-compat-efi-roms ipxe-qemu libbrlapi0.7 libcacard0 libfdt1 libiscsi7 libpmem1 librados2 librbd1 libslirp0 libspice-server1 libusbredirparser1 libvirglrenderer1 qemu-block-extra qemu-efi-aarch64 qemu-efi-arm qemu-efi qemu-system-arm qemu-system-common qemu-system-data qemu-system-gui qemu-user-static qemu-utils sharutils; do
+            apt-fast install ${pkg};
+            if podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m; then;
+              echo "Package ${pkg} caused command to succeed.";
+              exit 0;
+            fi;
+          done;
+          echo "Command still fails after installing all dependencies.";
+        shell: bash
