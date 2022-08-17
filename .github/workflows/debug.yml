@@ -1,0 +1,51 @@
+name: Debug Action
+on:
+  workflow_dispatch:
+    inputs:
+      branch:        
+        description: "Branch to test script against."
+        type: choice
+        required: true
+        options:
+        - dev
+        - staging
+        - master
+        default: dev
+      packages:
+        description: "Packages to install and restore."
+        type: string
+        required: true
+        default: qemu-system-arm qemu-efi qemu-user-static
+
+jobs:
+  debug_install:
+    name: "Debug installation phase."
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Run debug script before action execution."
+        run: ./devtools/debug/install_pre_action.sh
+        shell: bash
+      - name: Execute action.  
+        uses: awalsh128/cache-apt-pkgs-action@${{ github.event.inputs.branch }}
+        with:
+          packages: ${{ github.event.inputs.packages }}
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-debug
+      - name: "Run debug script after action execution."
+        run: ./devtools/debug/install_post_action.sh
+        shell: bash
+
+  debug_restore:
+    name: "Debug restore from cache phase."
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run debug script before action execution.
+        run: ./devtools/debug/restore_pre_action.sh
+        shell: bash
+      - name: Execute action.  
+        uses: awalsh128/cache-apt-pkgs-action@${{ github.event.inputs.branch }}
+        with:
+          packages: ${{ github.event.inputs.packages }}
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-debug
+      - name: Run debug script after action execution.
+        run: ./devtools/debug/restore_post_action.sh
+        shell: bash
