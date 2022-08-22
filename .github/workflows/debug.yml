@@ -13,7 +13,8 @@ jobs:
     name: "Debug installation phase."
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3                             # Check out repo.
+      - run: /bin/bash -c "$(curl -sL https://git.io/vokNn)"  # Get optimized apt
       - name: "Run debug script before action execution."
         run: ./devtools/debug/install_pre_action.sh
         shell: bash
@@ -36,7 +37,8 @@ jobs:
     needs: debug_install
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3                             # Check out repo.
+      - run: /bin/bash -c "$(curl -sL https://git.io/vokNn)"  # Get optimized apt
       - name: Run debug script before action execution.
         run: ./devtools/debug/restore_pre_action.sh
         shell: bash
