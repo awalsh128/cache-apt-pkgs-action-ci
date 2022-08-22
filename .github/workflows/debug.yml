@@ -33,6 +33,7 @@ jobs:
 
   debug_restore:
     name: "Debug restore from cache phase."
+    needs: debug_install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
