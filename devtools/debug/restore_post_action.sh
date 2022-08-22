@@ -8,3 +8,4 @@ for pkg in binfmt-support ipxe-qemu-256k-compat-efi-roms ipxe-qemu libbrlapi0.7 
   fi
 done
 echo "Command still fails after installing all dependencies."
+exit 1
