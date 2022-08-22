@@ -2,15 +2,6 @@ name: Debug Action
 on:
   workflow_dispatch:
     inputs:
-      branch:        
-        description: "Branch to test script against."
-        type: choice
-        required: true
-        options:
-        - dev
-        - staging
-        - master
-        default: dev
       packages:
         description: "Packages to install and restore."
         type: string
@@ -26,7 +17,7 @@ jobs:
         run: ./devtools/debug/install_pre_action.sh
         shell: bash
       - name: Execute action.  
-        uses: awalsh128/cache-apt-pkgs-action@${{ github.event.inputs.branch }}
+        uses: awalsh128/cache-apt-pkgs-action@dev
         with:
           packages: ${{ github.event.inputs.packages }}
           version: ${{ github.run_id }}-${{ github.run_attempt }}-debug
