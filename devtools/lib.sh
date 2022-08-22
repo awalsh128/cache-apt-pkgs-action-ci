@@ -43,12 +43,14 @@ function confirm_prompt {
 # Arguments:
 #   Argument to validate.
 #   Message to display on error.
+#   Help message.
 # Returns:
 #   None
 #######################################
 function validate_arg {
   if [[ ! "${1}" ]]; then
     echo "${2}"
+    echo "\n${3}"
     exit 1
   fi
 }
