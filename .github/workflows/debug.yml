@@ -13,6 +13,7 @@ jobs:
     name: "Debug installation phase."
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: "Run debug script before action execution."
         run: ./devtools/debug/install_pre_action.sh
         shell: bash
@@ -24,11 +25,17 @@ jobs:
       - name: "Run debug script after action execution."
         run: ./devtools/debug/install_post_action.sh
         shell: bash
+      - uses: actions/upload-artifact@v3
+        with:
+          name: debug-action
+          path: ./debug
+          retention-days: 7
 
   debug_restore:
     name: "Debug restore from cache phase."
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Run debug script before action execution.
         run: ./devtools/debug/restore_pre_action.sh
         shell: bash
@@ -40,3 +47,8 @@ jobs:
       - name: Run debug script after action execution.
         run: ./devtools/debug/restore_post_action.sh
         shell: bash
+      - uses: actions/upload-artifact@v3
+        with:
+          name: debug-action
+          path: ./debug
+          retention-days: 7
