@@ -17,7 +17,7 @@ function clone_repo_and_cd {
   else
     git clone ${repo_url}
   fi
-  cd "${repo_dir}"
+  cd "${repo_dir}"  
 }
 
 #######################################

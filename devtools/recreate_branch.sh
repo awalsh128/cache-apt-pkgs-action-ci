@@ -8,14 +8,14 @@ target_branch="${1}"  # replaced
 # Include library.
 source "$(dirname -- $(realpath -- ${0}))/lib.sh"
 
-clone_repo_and_cd ${source_branch}
 confirm_prompt "Do you want to push the branch reset on '${target_branch}' from '${source_branch}'?"
 
-# Delete locally
+clone_repo_and_cd ${source_branch}
+git branch -a
+
+git branch ${target_branch}
 git branch --delete ${target_branch}
-# Delete remotely
 git push origin --delete ${target_branch}
-# Create branch
-git checkout --branch ${target_branch}
-# Push creation to remote
+
+git branch ${target_branch}
 git push origin ${target_branch}
