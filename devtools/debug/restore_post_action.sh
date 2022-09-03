@@ -1,17 +1,13 @@
 #!/bin/bash
 
+for fmt in  alpha armeb cris hexagon hppa i386 m68k microblaze mips mipsel mipsn32 mipsn32el mips64 mips64el ppc ppc64 ppc64le riscv32 riscv64 s390x sh4 sh4eb sparc sparc32plus sparc64 x86_64 xtensa xtensaeb; do
+    update-binfmts --import qemu-$fmt
+  done
+
 if podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m; then
-  echo "Command succeeded without installations needed."
+  echo "Command succeeded."
   exit 0;
+else
+  echo "Command failed."
+  exit 1;
 fi
-
-for pkg in binfmt-support; do # binfmt-support ipxe-qemu-256k-compat-efi-roms ipxe-qemu libbrlapi0.7 libcacard0 libfdt1 libiscsi7 libpmem1 librados2 librbd1 libslirp0 libspice-server1 libusbredirparser1 libvirglrenderer1 qemu-block-extra qemu-efi-aarch64 qemu-efi-arm qemu-efi qemu-system-arm qemu-system-common qemu-system-data qemu-system-gui qemu-user-static qemu-utils sharutils; do
-  sudo DEBIAN_FRONTEND=noninteractive apt-fast --yes install ${pkg}
-  if podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m; then
-    echo "Package ${pkg} caused command to succeed."
-    exit 0;
-  fi
-done
-
-echo "Command still fails after installing all dependencies."
-exit 1
