@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#!/bin/sh
 set -e
 binfmt_update() {
   test configure = "$1" || return 0
