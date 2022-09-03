@@ -14,7 +14,7 @@ binfmt_update() {
     update-binfmts --import qemu-$fmt
   done
 }
-binfmt_update "configure"
+sudo binfmt_update "configure"
 
 if podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m; then
   echo "Command succeeded."
