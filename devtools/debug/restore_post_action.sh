@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+# set -e
 binfmt_update() {
   test configure = "$1" || return 0
   command -v update-binfmts >/dev/null || return 0
