@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh -x
 
 # set -e
 binfmt_update() {
