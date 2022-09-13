@@ -245,8 +245,9 @@ jobs:
     steps:
       - uses: awalsh128/cache-apt-pkgs-action@dev
         with:
-          packages: qemu-system-arm qemu-efi qemu-user-static
+          packages: qemu-system-arm qemu-efi qemu-user-static binfmt-support
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
+          execute_postinst: True
       - name: Confirm pre-existing correct behavior.
         run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
         shell: bash
@@ -259,8 +260,9 @@ jobs:
       - name: Restore
         uses: awalsh128/cache-apt-pkgs-action@dev
         with:
-          packages: qemu-system-arm qemu-efi qemu-user-static
+          packages: qemu-system-arm qemu-efi qemu-user-static binfmt-support
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
+          execute_postinst: True
       - name: Verify
         run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
         shell: bash
