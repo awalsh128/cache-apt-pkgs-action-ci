@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: List all package versions (including deps).
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     name: List package versions.
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Install package and cache.
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Install packages with new version.
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Refresh installed and cached packages.
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Restore cached packages.
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -122,7 +122,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Restore with packages out of order.
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -140,7 +140,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Add another package.
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -158,7 +158,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Restore added package.
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -221,7 +221,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Reinstall existing package (regression issue #36)."
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -232,7 +232,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Install with reported package dependencies not installed (regression issue #37)."
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -265,4 +265,32 @@ jobs:
           execute_postinst: True
       - name: Verify
         run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
+        shell: bash
+
+  regression_57_install_and_cache:
+    runs-on: ubuntu-latest
+    name: "LaTeX PDF generation (regression issue #57). Cache packages."
+    steps:
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
+        with:
+          packages: texlive-latex-base
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
+          execute_postinst: True
+      - name: Confirm pre-existing correct behavior.
+        run: echo "\documentclass{article} \begin{document} Hello world!! \end{document}" | pdflatex
+        shell: bash
+
+  regression_57_restore_and_verify:
+    runs-on: ubuntu-latest
+    needs: regression_57_install_and_cache
+    name: "LaTeX PDF generation (regression issue #57). Restore packages and verify."
+    steps:
+      - name: Restore
+        uses: awalsh128/cache-apt-pkgs-action@$branch$
+        with:
+          packages: texlive-latex-base
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
+          execute_postinst: True
+      - name: Verify
+        run: echo "\documentclass{article} \begin{document} Hello world!! \end{document}" | pdflatex
         shell: bash
