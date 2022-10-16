@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: List all package versions (including deps).
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     name: List package versions.
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Install package and cache.
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Install packages with new version.
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Refresh installed and cached packages.
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Restore cached packages.
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -122,7 +122,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Restore with packages out of order.
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -140,7 +140,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Add another package.
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -158,7 +158,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Restore added package.
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -221,7 +221,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Reinstall existing package (regression issue #36)."
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -232,7 +232,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Install with reported package dependencies not installed (regression issue #37)."
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
@@ -245,7 +245,7 @@ jobs:
     steps:
       - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
-          packages: qemu-system-arm qemu-efi qemu-user-static
+          packages: qemu-system-arm qemu-efi qemu-user-static binfmt-support
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
           execute_postinst: True
       - name: Confirm pre-existing correct behavior.
@@ -260,7 +260,7 @@ jobs:
       - name: Restore
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
-          packages: qemu-system-arm qemu-efi qemu-user-static
+          packages: qemu-system-arm qemu-efi qemu-user-static binfmt-support
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
           execute_postinst: True
       - name: Verify
