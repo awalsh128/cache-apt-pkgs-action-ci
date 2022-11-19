@@ -247,7 +247,7 @@ jobs:
         with:
           packages: qemu-system-arm qemu-efi qemu-user-static binfmt-support
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
-          execute_postinst: true
+          execute_install_scripts: true
       - name: Confirm pre-existing correct behavior.
         run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
         shell: bash
@@ -262,7 +262,7 @@ jobs:
         with:
           packages: qemu-system-arm qemu-efi qemu-user-static binfmt-support
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
-          execute_postinst: true
+          execute_install_scripts: true
       - name: Verify
         run: podman run --rm -it docker.io/arm64v8/alpine:3.14 uname -m
         shell: bash
@@ -275,7 +275,7 @@ jobs:
         with:
           packages: texlive-latex-base
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
-          execute_postinst: true
+          execute_install_scripts: true
       - name: Confirm pre-existing correct behavior.
         run: echo "\documentclass{article} \begin{document} Hello world!! \end{document}" | pdflatex
         shell: bash
@@ -290,7 +290,7 @@ jobs:
         with:
           packages: texlive-latex-base
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_44
-          execute_postinst: true
+          execute_install_scripts: true
       - name: Verify
         run: echo "\documentclass{article} \begin{document} Hello world!! \end{document}" | pdflatex
         shell: bash
