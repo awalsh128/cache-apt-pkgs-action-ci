@@ -16,6 +16,7 @@ jobs:
         with:
           packages: xdot
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-all-package-versions
+          debug: true
       - name: Verify      
         if: |
           steps.cache-apt-pkgs.outputs.cache-hit != 'false' || 
@@ -37,6 +38,7 @@ jobs:
         with:
           packages: xdot rolldice
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-package-versions
+          debug: true
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.package-version-list != 'rolldice:1.16-1build1,xdot:1.2-2'
         run: |
@@ -55,6 +57,7 @@ jobs:
         with:
           packages: xdot rolldice
           version: ${{ github.run_id }}-${{ github.run_attempt }}
+          debug: true
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
         run: |
@@ -73,6 +76,7 @@ jobs:
         with:
           packages: xdot rolldice
           version: ${{ github.run_id }}-${{ github.run_attempt }}-new_version
+          debug: true
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
         run: |
@@ -91,7 +95,7 @@ jobs:
         with:
           packages: xdot rolldice
           version: ${{ github.run_id }}-${{ github.run_attempt }}-new_version
-          refresh: true
+          debug: true
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
         run: |
@@ -110,6 +114,7 @@ jobs:
         with:
           packages: xdot rolldice
           version: ${{ github.run_id }}-${{ github.run_attempt }}
+          debug: true
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
         run: |
@@ -128,6 +133,7 @@ jobs:
         with:
           packages: rolldice xdot
           version: ${{ github.run_id }}-${{ github.run_attempt }}
+          debug: true
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
         run: |
@@ -146,6 +152,7 @@ jobs:
         with:
           packages: xdot rolldice distro-info-data
           version: ${{ github.run_id }}-${{ github.run_attempt }}
+          debug: true
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
         run: |
@@ -164,6 +171,7 @@ jobs:
         with:
           packages: xdot rolldice distro-info-data
           version: ${{ github.run_id }}-${{ github.run_attempt }}
+          debug: true
       - name: Verify
         if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
         run: |
@@ -211,6 +219,7 @@ jobs:
         with:
           packages: xdot
           version: 123 abc
+          debug: true
         continue-on-error: true
       - name: Verify
         if: steps.execute.outcome == 'failure'
@@ -227,6 +236,7 @@ jobs:
         with:
           packages: libgtk-3-dev
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_36
+          debug: true
 
   regression_37:
     runs-on: ubuntu-latest
@@ -238,3 +248,4 @@ jobs:
         with:
           packages: libosmesa6-dev libgl1-mesa-dev python3-tk pandoc git-restore-mtime
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_37
+          debug: true
