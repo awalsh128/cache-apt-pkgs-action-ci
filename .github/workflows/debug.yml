@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3                             # Check out repo.
-      - run: /bin/bash -c "$(curl -sL https://git.io/vokNn)"  # Get optimized apt
       - name: "Run debug script before action execution."
         run: sudo ./devtools/debug/install_pre_action.sh
         shell: bash
@@ -38,7 +37,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3                             # Check out repo.
-      - run: /bin/bash -c "$(curl -sL https://git.io/vokNn)"  # Get optimized apt
       - name: Run debug script before action execution.
         run: sudo ./devtools/debug/restore_pre_action.sh
         shell: bash
