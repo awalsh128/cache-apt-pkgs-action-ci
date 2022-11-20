@@ -7,7 +7,7 @@ function usage {
 }
 
 execute_install_scripts=true
-debug=true
+debug=false
 
 root_dir="/tmp/cache-apt-pkgs-action"
 # cache_dir="${root_dir}/cache"
@@ -27,7 +27,7 @@ else
 fi
 
 packages=${@:2}
-[ ${packages} ] || usage "No packages specified." 2
+[ "${packages}" ] || usage "No packages specified." 2
 
 sudo apt-get purge --yes ${packages}
 sudo apt-get autoremove --yes ${packages}
