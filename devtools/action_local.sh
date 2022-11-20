@@ -7,13 +7,18 @@ function usage {
 }
 
 execute_install_scripts=true
+debug=true
 
 root_dir="/tmp/cache-apt-pkgs-action"
+# cache_dir="${root_dir}/cache"
+# restore_dir="${root_dir}/restore"
 cache_dir="${root_dir}/cache"
-restore_dir="${root_dir}/restore"
+restore_dir="/"
 
 if [ "${1}" == "install" ]; then
-  sudo rm -fr ${cache_dir} ${restore_dir}; mkdir -p ${cache_dir}
+  sudo rm -fr ${cache_dir}
+  mkdir -p ${cache_dir}
+  test ${restore_dir} != "/" && rm -fr ${restore_dir}
   cache_hit=false  
 elif [ "${1}" == "restore" ]; then
   cache_hit=true  
@@ -27,4 +32,4 @@ packages=${@:2}
 sudo apt-get purge --yes ${packages}
 sudo apt-get autoremove --yes ${packages}
 
-time ../../cache-apt-pkgs-action/post_cache_action.sh "${cache_dir}" "${restore_dir}" ${cache_hit} ${execute_install_scripts} ${packages}
+time ../../cache-apt-pkgs-action/post_cache_action.sh "${cache_dir}" "${restore_dir}" ${cache_hit} ${execute_install_scripts} ${debug} ${packages}
