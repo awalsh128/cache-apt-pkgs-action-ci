@@ -2,13 +2,13 @@
 
 # Include library.
 source "$(dirname -- $(realpath -- ${0}))/lib.sh"
-help_msg="${0} <source> <target>"
+usage_msg=$(usage ${0} "<source> <target>")
 
 source_tag="${1}"
-validate_arg "${source_tag}" "Source tag arg must be non-empty." "${help_msg}"
+validate_arg "${source_tag}" "Source tag arg must be non-empty." "${usage_msg}"
 
 target_tag="${2}"
-validate_arg "${source_tag}" "Target tag arg must be non-empty." "${help_msg}"
+validate_arg "${source_tag}" "Target tag arg must be non-empty." "${usage_msg}"
 
 confirm_prompt "Do you want to update '${target_tag}' from '${source_tag}'?"
 

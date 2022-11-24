@@ -249,3 +249,15 @@ jobs:
           packages: libosmesa6-dev libgl1-mesa-dev python3-tk pandoc git-restore-mtime
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_37
           debug: true
+
+  debug_disabled:
+    runs-on: ubuntu-latest
+    name: Debug disabled.
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: xdot
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-list-all-package-versions
+          debug: false
