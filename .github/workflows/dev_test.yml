@@ -63,7 +63,43 @@ jobs:
         run: |
           echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           exit 1
-        shell: bash 
+        shell: bash
+
+  install_with_explicit_version_colon_delimited:
+    runs-on: ubuntu-latest
+    name: Install package and cache using an explicit version (colon delimited) in the package list.
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@dev
+        with:
+          packages: xdot:1.1-2
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-explicit_version_colon_delimited
+          debug: true
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.package-version-list != 'xdot:1.2-2'
+        run: |          
+          echo "package-version-list = ${{ steps.cache-apt-pkgs.outputs.package-version-list }}"
+          exit 1
+        shell: bash
+
+  install_with_explicit_version_equals_delimited:
+    runs-on: ubuntu-latest
+    name: Install package and cache using an explicit version (equals delimited) in the package list.
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@dev
+        with:
+          packages: xdot=1.1-2
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-explicit_version_equals_delimited
+          debug: true
+      - name: Verify
+        if: steps.cache-apt-pkgs.outputs.package-version-list != 'xdot:1.2-2'
+        run: |          
+          echo "package-version-list = ${{ steps.cache-apt-pkgs.outputs.package-version-list }}"
+          exit 1
+        shell: bash
 
   install_with_new_version:
     needs: install
