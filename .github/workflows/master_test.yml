@@ -14,7 +14,7 @@ jobs:
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@master
         with:
-          packages: xdot:1.2-2
+          packages: xdot
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-all-package-versions
           debug: true
       - name: Verify      
@@ -36,7 +36,7 @@ jobs:
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@master
         with:
-          packages: xdot:1.2-2 rolldice
+          packages: xdot rolldice
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-package-versions
           debug: true
       - name: Verify
