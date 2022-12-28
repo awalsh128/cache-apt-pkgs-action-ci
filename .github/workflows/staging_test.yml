@@ -262,14 +262,26 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-all-package-versions
           debug: false
 
-  regression_72:
+  regression_72_1:
     runs-on: ubuntu-latest
-    name: "Install privileged level package (regression issue #72)."
+    name: "Cache Java CA certs package v1 (regression issue #72)."
     steps:
       - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@dev
         with:
           packages: openjdk-11-jre
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
+          debug: true
+
+  regression_72_2:
+    runs-on: ubuntu-latest
+    name: "Cache Java CA certs package v2 (regression issue #72)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@dev
+        with:
+          packages: default-jre
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
           debug: true
