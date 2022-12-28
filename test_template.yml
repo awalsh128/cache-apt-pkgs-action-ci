@@ -285,3 +285,15 @@ jobs:
           packages: default-jre
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
           debug: true
+
+  regression_76:
+    runs-on: ubuntu-latest
+    name: "Cache empty archive (regression issue #76)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@dev
+        with:
+          packages: intel-oneapi-runtime-libs
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
+          debug: true
