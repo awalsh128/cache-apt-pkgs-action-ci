@@ -291,9 +291,17 @@ jobs:
     name: "Cache empty archive (regression issue #76)."
     steps:
       - uses: actions/checkout@v3.1.0
+      - id: preconditions
+        run: |
+          wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null;
+          echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list;
+          apt-get -qq update;
+          apt-get install -y intel-oneapi-runtime-libs intel-oneapi-runtime-opencl;
+          apt-get install -y opencl-headers ocl-icd-opencl-dev;
+          apt-get install -y libsundials-dev;
       - id: cache-apt-pkgs
         uses: awalsh128/cache-apt-pkgs-action@dev
-        with:
+        with:                    
           packages: intel-oneapi-runtime-libs
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
           debug: true
