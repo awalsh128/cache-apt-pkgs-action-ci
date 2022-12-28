@@ -298,7 +298,7 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-all-package-versions
           debug: false
 
-  regresion_72:
+  regression_72:
     runs-on: ubuntu-latest
     name: "Install privileged level package (regression issue #72)."
     steps:
