@@ -63,7 +63,7 @@ jobs:
         run: |
           echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
           exit 1
-        shell: bash 
+        shell: bash
 
   install_with_new_version:
     needs: install
@@ -261,3 +261,15 @@ jobs:
           packages: xdot
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-all-package-versions
           debug: false
+
+  regression_72:
+    runs-on: ubuntu-latest
+    name: "Install privileged level package (regression issue #72)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@dev
+        with:
+          packages: openjdk-11-jre
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
+          debug: true
