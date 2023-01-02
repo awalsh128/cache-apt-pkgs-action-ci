@@ -6,7 +6,7 @@ on:
         description: "Packages to install and restore."
         type: string
         required: true
-        default: qemu-system-arm qemu-efi qemu-user-static
+        default: xdot
 
 jobs:
   debug_install:
