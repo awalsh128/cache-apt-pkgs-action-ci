@@ -2,14 +2,6 @@ name: Debug Action
 on:
   workflow_dispatch:
     inputs:
-      action_branch:
-        description: "Action source code to execute."
-        type: choice
-        options:
-        - master
-        - staging
-        - dev
-        default: dev
       packages:
         description: "Packages to install and restore."
         type: string
@@ -26,7 +18,7 @@ jobs:
         run: sudo ./devtools/debug/install_pre_action.sh
         shell: bash
       - name: Execute action.  
-        uses: awalsh128/cache-apt-pkgs-action@${{ github.event.inputs.action_branch }}
+        uses: awalsh128/cache-apt-pkgs-action@master
         with:
           packages: ${{ github.event.inputs.packages }}
           version: ${{ github.run_id }}-${{ github.run_attempt }}-debug
@@ -49,7 +41,7 @@ jobs:
         run: sudo ./devtools/debug/restore_pre_action.sh
         shell: bash
       - name: Execute action.  
-        uses: awalsh128/cache-apt-pkgs-action@${{ github.event.inputs.action_branch }}
+        uses: awalsh128/cache-apt-pkgs-action@master
         with:
           packages: ${{ github.event.inputs.packages }}
           version: ${{ github.run_id }}-${{ github.run_attempt }}-debug
