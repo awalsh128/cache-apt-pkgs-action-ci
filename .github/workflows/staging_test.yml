@@ -268,7 +268,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@dev
+        uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: openjdk-11-jre
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
@@ -280,7 +280,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3.1.0
       - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@dev
+        uses: awalsh128/cache-apt-pkgs-action@staging
         with:
           packages: default-jre
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
@@ -300,8 +300,20 @@ jobs:
           sudo apt-get install -y opencl-headers ocl-icd-opencl-dev;
           sudo apt-get install -y libsundials-dev;
       - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@dev
+        uses: awalsh128/cache-apt-pkgs-action@staging
         with:                    
           packages: intel-oneapi-runtime-libs
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
+          debug: true
+
+  regression_75:
+    runs-on: ubuntu-latest
+    name: "Tar error with libboost-dev (regression issue #75)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - id: cache-apt-pkgs
+        uses: awalsh128/cache-apt-pkgs-action@staging
+        with:
+          packages: libboost-dev
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
           debug: true
