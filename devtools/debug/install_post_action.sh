@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ls -al /var/cache/apt/archives
+dpkg -L libboost1.71-dev
