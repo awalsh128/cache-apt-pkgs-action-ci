@@ -338,3 +338,32 @@ jobs:
           packages: libasound2 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libcups2 libdrm2 libgbm1 libnspr4 libnss3 libxcomposite1 libxdamage1 libxfixes3 libxkbcommon0 libxrandr2
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_81
           debug: ${{ env.DEBUG }}
+
+  regression_84_backslash:
+    runs-on: ubuntu-latest
+    name: "Multiline package listings (regression issue #84)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: Literal Block
+        uses: awalsh128/cache-apt-pkgs-action@dev
+        with:
+          packages: >
+            xdot 
+            rolldice distro-info-data
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_84
+          debug: ${{ env.DEBUG }}
+      - name: Folded Block
+        id: folded-block
+        uses: awalsh128/cache-apt-pkgs-action@dev
+        with:
+          packages: |
+            xdot \
+            rolldice distro-info-data
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_84
+          debug: ${{ env.DEBUG }}
+      - name: Verify
+        if: steps.folded-block.outputs.cache-hit != 'true'
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs-backslash.outputs.cache-hit }}"
+          exit 1
+        shell: bash
