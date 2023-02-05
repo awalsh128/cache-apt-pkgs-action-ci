@@ -20,20 +20,20 @@ jobs:
     name: List all package versions (including deps).
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
+      - name: Execute
+        id: execute
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: xdot
-          version: ${{ github.run_id }}-${{ github.run_attempt }}-list-all-package-versions
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-list_all_versions
           debug: ${{ env.DEBUG }}
-      - name: Verify      
-        if: |
-          steps.cache-apt-pkgs.outputs.cache-hit != 'false' || 
-          steps.cache-apt-pkgs.outputs.all-package-version-list != 'gir1.2-atk-1.0:2.36.0-3build1,gir1.2-gtk-3.0:3.24.33-1ubuntu2,gir1.2-harfbuzz-0.0:2.7.4-1ubuntu3.1,gir1.2-pango-1.0:1.50.6+ds-2,graphviz:2.42.2-6,libann0:1.1.2+doc-7build1,libcdt5:2.42.2-6,libcgraph6:2.42.2-6,libgts-0.7-5:0.7.6+darcs121130-5,libgts-bin:0.7.6+darcs121130-5,libgvc6:2.42.2-6,libgvpr2:2.42.2-6,liblab-gamut1:2.42.2-6,libpangoxft-1.0-0:1.50.6+ds-2,libpathplan4:2.42.2-6,python3-cairo:1.20.1-3build1,python3-gi-cairo:3.42.1-0ubuntu1,python3-numpy:1:1.21.5-1ubuntu22.04.1,xdot:1.2-2'
+      - if: |
+          steps.execute.outputs.cache-hit != 'false' || 
+          steps.execute.outputs.all-package-version-list != 'gir1.2-atk-1.0:2.36.0-3build1,gir1.2-gtk-3.0:3.24.33-1ubuntu2,gir1.2-harfbuzz-0.0:2.7.4-1ubuntu3.1,gir1.2-pango-1.0:1.50.6+ds-2,graphviz:2.42.2-6,libann0:1.1.2+doc-7build1,libcdt5:2.42.2-6,libcgraph6:2.42.2-6,libgts-0.7-5:0.7.6+darcs121130-5,libgts-bin:0.7.6+darcs121130-5,libgvc6:2.42.2-6,libgvpr2:2.42.2-6,liblab-gamut1:2.42.2-6,libpangoxft-1.0-0:1.50.6+ds-2,libpathplan4:2.42.2-6,python3-cairo:1.20.1-3build1,python3-gi-cairo:3.42.1-0ubuntu1,python3-numpy:1:1.21.5-1ubuntu22.04.1,xdot:1.2-2'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
-          echo "package-version-list = ${{ steps.cache-apt-pkgs.outputs.package-version-list }}"
-          echo "all-package-version-list = ${{ steps.cache-apt-pkgs.outputs.all-package-version-list }}"
+          echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
+          echo "package-version-list = ${{ steps.execute.outputs.package-version-list }}"
+          echo "all-package-version-list = ${{ steps.execute.outputs.all-package-version-list }}"
           exit 1
         shell: bash
 
@@ -42,149 +42,130 @@ jobs:
     name: List package versions.
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
+      - name: Execute
+        id: execute
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: xdot rolldice
-          version: ${{ github.run_id }}-${{ github.run_attempt }}-list-package-versions
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-list_versions
           debug: ${{ env.DEBUG }}
-      - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false' || steps.cache-apt-pkgs.outputs.package-version-list != 'rolldice:1.16-1build1,xdot:1.2-2'
+      - if: steps.execute.outputs.cache-hit != 'false' || steps.execute.outputs.package-version-list != 'rolldice:1.16-1build1,xdot:1.2-2'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}" 
-          echo "package-version-list = ${{ steps.cache-apt-pkgs.outputs.package-version-list }}"
+          echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}" 
+          echo "package-version-list = ${{ steps.execute.outputs.package-version-list }}"
           exit 1
         shell: bash
 
-  install:
+  standard_workflow_install:
     runs-on: ubuntu-latest
     name: Install package and cache.
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
+      - name: Execute        
+        id: execute
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: xdot rolldice
-          version: ${{ github.run_id }}-${{ github.run_attempt }}
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-standard_workflow
           debug: ${{ env.DEBUG }}
-      - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
+      - if: steps.execute.outputs.cache-hit != 'false'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
+          echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
         shell: bash
 
-  install_with_new_version:
+  standard_workflow_install_with_new_version:
     needs: install
     runs-on: ubuntu-latest
     name: Install packages with new version.
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
+      - name: Execute
+        id: execute
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: xdot rolldice
-          version: ${{ github.run_id }}-${{ github.run_attempt }}-new_version
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-standard_workflow_install_with_new_version
           debug: ${{ env.DEBUG }}
-      - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
+      - if: steps.execute.outputs.cache-hit != 'false'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
+          echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
         shell: bash
 
-  install_with_new_version_refresh:
-    needs: install_with_new_version
-    runs-on: ubuntu-latest
-    name: Refresh installed and cached packages.
-    steps:
-      - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
-        with:
-          packages: xdot rolldice
-          version: ${{ github.run_id }}-${{ github.run_attempt }}-new_version
-          debug: ${{ env.DEBUG }}
-      - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
-        run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
-          exit 1
-        shell: bash
-
-  restore:
+  standard_workflow_restore:
     needs: install
     runs-on: ubuntu-latest
     name: Restore cached packages.
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
+      - name: Execute
+        id: execute
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: xdot rolldice
-          version: ${{ github.run_id }}-${{ github.run_attempt }}
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-standard_workflow
           debug: ${{ env.DEBUG }}
-      - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
+      - if: steps.execute.outputs.cache-hit != 'true'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
+          echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
         shell: bash
 
-  restore_with_packages_out_of_order:
+  standard_workflow_restore_with_packages_out_of_order:
     needs: install
     runs-on: ubuntu-latest
     name: Restore with packages out of order.
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
+      - name: Execute
+        id: execute
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: rolldice xdot
-          version: ${{ github.run_id }}-${{ github.run_attempt }}
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-standard_workflow
           debug: ${{ env.DEBUG }}
-      - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
+      - if: steps.execute.outputs.cache-hit != 'true'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
+          echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
         shell: bash
 
-  add_package:
+  standard_workflow_add_package:
     needs: install
     runs-on: ubuntu-latest
     name: Add another package.
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
+      - name: Execute
+        id: execute
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: xdot rolldice distro-info-data
-          version: ${{ github.run_id }}-${{ github.run_attempt }}
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-standard_workflow
           debug: ${{ env.DEBUG }}
-      - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'false'
+      - if: steps.execute.outputs.cache-hit != 'false'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
+          echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
         shell: bash
 
-  restore_add_package:
+  standard_workflow_restore_add_package:
     needs: add_package
     runs-on: ubuntu-latest
     name: Restore added package.
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
+      - name: Execute
+        id: execute
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: xdot rolldice distro-info-data
-          version: ${{ github.run_id }}-${{ github.run_attempt }}
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-standard_workflow
           debug: ${{ env.DEBUG }}
-      - name: Verify
-        if: steps.cache-apt-pkgs.outputs.cache-hit != 'true'
+      - if: steps.execute.outputs.cache-hit != 'true'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs.outputs.cache-hit }}"
+          echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
         shell: bash
 
@@ -240,8 +221,7 @@ jobs:
     name: "Reinstall existing package (regression issue #36)."
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: libgtk-3-dev
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_36
@@ -252,8 +232,7 @@ jobs:
     name: "Install with reported package dependencies not installed (regression issue #37)."
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: libosmesa6-dev libgl1-mesa-dev python3-tk pandoc git-restore-mtime
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_37
@@ -264,8 +243,7 @@ jobs:
     name: Debug disabled.
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: xdot
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list-all-package-versions
@@ -276,8 +254,7 @@ jobs:
     name: "Cache Java CA certs package v1 (regression issue #72)."
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: openjdk-11-jre
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
@@ -288,8 +265,7 @@ jobs:
     name: "Cache Java CA certs package v2 (regression issue #72)."
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: default-jre
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_72
@@ -300,16 +276,14 @@ jobs:
     name: "Cache empty archive (regression issue #76)."
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: preconditions
-        run: |
+      - run: |
           sudo wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null;
           echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list;
           sudo apt-get -qq update;
           sudo apt-get install -y intel-oneapi-runtime-libs intel-oneapi-runtime-opencl;
           sudo apt-get install -y opencl-headers ocl-icd-opencl-dev;
           sudo apt-get install -y libsundials-dev;
-      - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:                    
           packages: intel-oneapi-runtime-libs
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_76
@@ -320,8 +294,7 @@ jobs:
     name: "Tar error with libboost-dev (regression issue #79)."
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: libboost-dev
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_79
@@ -332,39 +305,73 @@ jobs:
     name: "Tar error with alsa-ucm-conf (regression issue #81)."
     steps:
       - uses: actions/checkout@v3.1.0
-      - id: cache-apt-pkgs
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: libasound2 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libcups2 libdrm2 libgbm1 libnspr4 libnss3 libxcomposite1 libxdamage1 libxfixes3 libxkbcommon0 libxrandr2
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_81
           debug: ${{ env.DEBUG }}
 
-  regression_84_backslash:
+  regression_84_literal_block_install:
     runs-on: ubuntu-latest
-    name: "Multiline package listings (regression issue #84)."
+    name: "Install multiline package listing using literal block style (regression issue #84)."
     steps:
       - uses: actions/checkout@v3.1.0
-      - name: Literal Block
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: >
             xdot 
             rolldice distro-info-data
-          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_84
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_84_literal_block
           debug: ${{ env.DEBUG }}
-      - name: Folded Block
-        id: folded-block
+
+  regression_84_literal_block_restore:
+    runs-on: ubuntu-latest
+    name: "Restore multiline package listing using literal block style (regression issue #84)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: Execute
+        id: execute
         uses: awalsh128/cache-apt-pkgs-action@$branch$
+        with:
+          packages: xdot rolldice distro-info-data
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_84_literal_block
+          debug: ${{ env.DEBUG }}
+      - name: Verify
+        if: steps.execute.outputs.cache-hit != 'true'
+        run: |
+          echo "cache-hit = ${{ steps.cache-apt-pkgs-backslash.outputs.cache-hit }}"
+          exit 1
+        shell: bash
+
+  regression_84_folded_block_install:
+    runs-on: ubuntu-latest
+    name: "Install multiline package listing using literal block style (regression issue #84)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: |
             xdot \
             rolldice distro-info-data
-          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_84
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_84_folded_block
+          debug: ${{ env.DEBUG }}
+
+  regression_84_folded_block_restore:
+    runs-on: ubuntu-latest
+    name: "Restore multiline package listing using literal block style (regression issue #84)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: Execute
+        id: execute
+        uses: awalsh128/cache-apt-pkgs-action@$branch$
+        with:
+          packages: xdot rolldice distro-info-data
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_84_folded_block
           debug: ${{ env.DEBUG }}
       - name: Verify
-        if: steps.folded-block.outputs.cache-hit != 'true'
+        if: steps.execute.outputs.cache-hit != 'true'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs-backslash.outputs.cache-hit }}"
+          echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
         shell: bash
 
@@ -373,9 +380,8 @@ jobs:
     name: "Upload logs artifact name (regression issue #89)."
     steps:
       - uses: actions/checkout@v3.1.0
-      - name: Literal Block
-        uses: awalsh128/cache-apt-pkgs-action@$branch$
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
           packages: libgtk-3-dev:amd64
-          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_84
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_89
           debug: true
