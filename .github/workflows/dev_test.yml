@@ -156,7 +156,7 @@ jobs:
         shell: bash
 
   standard_workflow_restore_add_package:
-    needs: add_package
+    needs: standard_workflow_add_package
     runs-on: ubuntu-latest
     name: Standard workflow restore added package.
     steps:
