@@ -330,6 +330,7 @@ jobs:
           debug: ${{ env.DEBUG }}
 
   regression_84_literal_block_restore:
+    needs: regression_84_literal_block_install
     runs-on: ubuntu-latest
     name: "Restore multiline package listing using literal block style (regression issue #84)."
     steps:
@@ -362,6 +363,7 @@ jobs:
           debug: ${{ env.DEBUG }}
 
   regression_84_folded_block_restore:
+    needs: regression_84_folded_block_install
     runs-on: ubuntu-latest
     name: "Restore multiline package listing using literal block style (regression issue #84)."
     steps:
