@@ -24,13 +24,13 @@ jobs:
         id: execute
         uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
-          packages: xdot
+          packages: xdot:1.2-2
           version: ${{ github.run_id }}-${{ github.run_attempt }}-list_all_versions
           debug: ${{ env.DEBUG }}
       - name: Verify
         if: |
           steps.execute.outputs.cache-hit != 'false' || 
-          steps.execute.outputs.all-package-version-list != 'gir1.2-atk-1.0:2.36.0-3build1,gir1.2-gtk-3.0:3.24.33-1ubuntu2,gir1.2-harfbuzz-0.0:2.7.4-1ubuntu3.1,gir1.2-pango-1.0:1.50.6+ds-2,graphviz:2.42.2-6,libann0:1.1.2+doc-7build1,libcdt5:2.42.2-6,libcgraph6:2.42.2-6,libgts-0.7-5:0.7.6+darcs121130-5,libgts-bin:0.7.6+darcs121130-5,libgvc6:2.42.2-6,libgvpr2:2.42.2-6,liblab-gamut1:2.42.2-6,libpangoxft-1.0-0:1.50.6+ds-2,libpathplan4:2.42.2-6,python3-cairo:1.20.1-3build1,python3-gi-cairo:3.42.1-0ubuntu1,python3-numpy:1:1.21.5-1ubuntu22.04.1,xdot:1.2-2'
+          steps.execute.outputs.all-package-version-list != 'gir1.2-atk-1.0:2.36.0-3build1,gir1.2-gtk-3.0:3.24.33-1ubuntu2,gir1.2-harfbuzz-0.0:2.7.4-1ubuntu3.1,gir1.2-pango-1.0:1.50.6+ds-2ubuntu1,graphviz:2.42.2-6,libann0:1.1.2+doc-7build1,libcdt5:2.42.2-6,libcgraph6:2.42.2-6,libgts-0.7-5:0.7.6+darcs121130-5,libgts-bin:0.7.6+darcs121130-5,libgvc6:2.42.2-6,libgvpr2:2.42.2-6,liblab-gamut1:2.42.2-6,libpango-1.0-0:1.50.6+ds-2ubuntu1,libpangocairo-1.0-0:1.50.6+ds-2ubuntu1,libpangoft2-1.0-0:1.50.6+ds-2ubuntu1,libpangoxft-1.0-0:1.50.6+ds-2ubuntu1,libpathplan4:2.42.2-6,python3-cairo:1.20.1-3build1,python3-gi-cairo:3.42.1-0ubuntu1,python3-numpy:1:1.21.5-1ubuntu22.04.1,xdot:1.2-2'
         run: |
           echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           echo "package-version-list = ${{ steps.execute.outputs.package-version-list }}"
