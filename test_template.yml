@@ -392,3 +392,14 @@ jobs:
           packages: libgtk-3-dev:amd64
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_89
           debug: true
+
+  regression_99:
+    runs-on: ubuntu-latest
+    name: "Install package with backslashes in filepaths (regression issue #99)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
+        with:
+          packages: systemd:249.11-0ubuntu3.7
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_99
+          debug: true
