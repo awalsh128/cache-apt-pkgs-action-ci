@@ -28,7 +28,6 @@ fi
 packages=${@:2}
 [ "${packages}" ] || usage "No packages specified." 2
 
-apt_packages=$(echo ${packages} | sed 's/:/=/g')
 sudo apt-get purge --yes ${apt_packages}
 sudo apt-get autoremove --yes ${apt_packages}
 
