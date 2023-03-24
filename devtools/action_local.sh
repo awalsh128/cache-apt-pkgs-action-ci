@@ -10,10 +10,8 @@ execute_install_scripts=true
 debug=false
 
 root_dir="/tmp/cache-apt-pkgs-action"
-# cache_dir="${root_dir}/cache"
-# restore_dir="${root_dir}/restore"
 cache_dir="${root_dir}/cache"
-restore_dir="/"
+restore_dir="${root_dir}/restore"
 add_repositories=""
 
 if [ "${1}" == "install" ]; then
@@ -30,7 +28,8 @@ fi
 packages=${@:2}
 [ "${packages}" ] || usage "No packages specified." 2
 
-sudo apt-get purge --yes ${packages}
-sudo apt-get autoremove --yes ${packages}
+apt_packages=$(echo ${packages} | sed 's/:/=/g')
+sudo apt-get purge --yes ${apt_packages}
+sudo apt-get autoremove --yes ${apt_packages}
 
-time ../../cache-apt-pkgs-action/post_cache_action.sh "${debug}" "${cache_dir}" "${restore_dir}" ${cache_hit} "${add_repositories}" ${execute_install_scripts} ${packages}
+time ../../cache-apt-pkgs-action/post_cache_action.sh "${cache_dir}" "${restore_dir}" ${cache_hit} ${execute_install_scripts} ${debug} ${packages}
