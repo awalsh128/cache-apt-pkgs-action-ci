@@ -413,4 +413,16 @@ jobs:
         with:
           packages: git-restore-mtime libgl1-mesa-dev libosmesa6-dev pandoc
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_98
-          debug: true  
+          debug: true
+
+  regression_98_2:
+    runs-on: ubuntu-latest
+    name: "Install package with backslashes in filepaths (regression issue #98-2)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
+        with:
+          packages: libgl1-mesa-glx xvfb
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_98_2
+          debug: true
+          
