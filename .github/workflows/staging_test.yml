@@ -406,7 +406,7 @@ jobs:
 
   regression_98:
     runs-on: ubuntu-latest
-    name: "Install package with backslashes in filepaths (regression issue #98)."
+    name: "Install error (regression issue #98)."
     steps:
       - uses: actions/checkout@v3.1.0
       - uses: awalsh128/cache-apt-pkgs-action@staging
@@ -417,7 +417,7 @@ jobs:
 
   regression_98_2:
     runs-on: ubuntu-latest
-    name: "Install package with backslashes in filepaths (regression issue #98-2)."
+    name: "Install error (regression issue #98-2)."
     steps:
       - uses: actions/checkout@v3.1.0
       - uses: awalsh128/cache-apt-pkgs-action@staging
