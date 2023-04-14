@@ -6,8 +6,8 @@ function usage {
   exit ${2}
 }
 
-execute_install_scripts=true
-debug=false
+execute_install_scripts=false
+debug=true
 
 root_dir="/tmp/cache-apt-pkgs-action"
 cache_dir="${root_dir}/cache"
@@ -28,7 +28,7 @@ fi
 packages=${@:2}
 [ "${packages}" ] || usage "No packages specified." 2
 
-sudo apt-get purge --yes ${apt_packages}
-sudo apt-get autoremove --yes ${apt_packages}
+sudo apt purge --yes ${apt_packages}
+sudo apt autoremove --yes ${apt_packages}
 
 time ../../cache-apt-pkgs-action/post_cache_action.sh "${cache_dir}" "${restore_dir}" ${cache_hit} ${execute_install_scripts} ${debug} ${packages}
