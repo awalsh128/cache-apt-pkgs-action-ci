@@ -400,7 +400,7 @@ jobs:
       - uses: actions/checkout@v3.1.0
       - uses: awalsh128/cache-apt-pkgs-action@$branch$
         with:
-          packages: systemd=249.11-0ubuntu3.7
+          packages: systemd=249.11-0ubuntu3.9
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_99
           debug: true
 
