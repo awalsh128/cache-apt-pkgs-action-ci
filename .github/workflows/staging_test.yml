@@ -10,6 +10,7 @@ on:
   repository_dispatch:
     types: [staging_push]
   push:
+package : build operator added
 
 env:
   DEBUG: ${{ github.event.inputs.debug || false }}
