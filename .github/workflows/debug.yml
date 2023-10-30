@@ -13,7 +13,6 @@ jobs:
     name: "Debug installation phase."
     runs-on: ubuntu-latest
     steps:
-      - run: apt-cache madison systemd
       - uses: actions/checkout@v3 # Check out repo.
       - name: "Run debug script before action execution."
         run: sudo ./devtools/debug/install_pre_action.sh
