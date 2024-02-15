@@ -8,8 +8,9 @@ on:
         required: true
 
 jobs:
-  publish_event:
+  update_release_tags:
     runs-on: ubuntu-latest
     name: Run update_release_tags.sh script.
     steps:
+      - uses: actions/checkout@v3
       - run: ./devtools/update_release_tags.sh ${{ github.event.inputs.version }}
