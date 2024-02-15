@@ -1,0 +1,15 @@
+name: Update Release Tags
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version tag to update to."
+        type: string
+        required: true
+
+jobs:
+  publish_event:
+    runs-on: ubuntu-latest
+    name: Run update_release_tags.sh script.
+    steps:
+      - run: ./devtools/update_release_tags.sh ${{ github.event.inputs.version }}
