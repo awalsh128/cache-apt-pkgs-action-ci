@@ -35,3 +35,8 @@ jobs:
           packages: python3-tk
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_98_v2
           debug: true
+      - name: Verify        
+        run: |
+          ls -al ~/cache-apt-pkgs
+          cat ~/cache-apt-pkgs/install.log
+        shell: bash
