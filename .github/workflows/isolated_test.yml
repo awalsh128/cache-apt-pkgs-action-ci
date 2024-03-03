@@ -15,7 +15,7 @@ env:
   # PYDEVD_DISABLE_FILE_VALIDATION: 1
   # PYVISTA_OFF_SCREEN: True
   # ALLOW_PLOTTING: true
-  # SHELLOPTS: errexit:pipefail
+  SHELLOPTS: errexit:pipefail
   # pythonLocation: /opt/hostedtoolcache/Python/3.12.2/x64
   # PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.2/x64/lib/pkgconfig
   # Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.2/x64
