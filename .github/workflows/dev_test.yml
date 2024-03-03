@@ -13,6 +13,8 @@ on:
 
 env:
   DEBUG: ${{ github.event.inputs.debug || false }}
+  # Test for overrides in built in shell options (regression issue 98).
+  SHELLOPTS: errexit:pipefail
 
 jobs:
   list_all_versions:
@@ -398,24 +400,13 @@ jobs:
 
   regression_98:
     runs-on: ubuntu-latest
-    name: "Install error (regression issue #98)."
+    name: "Install error due to SHELLOPTS override (regression issue #98)."
     steps:
       - uses: actions/checkout@v3.1.0
       - uses: awalsh128/cache-apt-pkgs-action@dev
         with:
           packages: git-restore-mtime libgl1-mesa-dev libosmesa6-dev pandoc
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_98
-          debug: true
-
-  regression_98_2:
-    runs-on: ubuntu-latest
-    name: "Install error (regression issue #98-2)."
-    steps:
-      - uses: actions/checkout@v3.1.0
-      - uses: awalsh128/cache-apt-pkgs-action@dev
-        with:
-          packages: libgl1-mesa-glx xvfb
-          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_98_2
           debug: true
 
   regression_106_install:
