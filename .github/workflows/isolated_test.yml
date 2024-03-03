@@ -1,0 +1,38 @@
+name: Isolated Dev Test
+on:
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: "Run in debug mode."
+        type: boolean
+        required: false
+        default: false
+
+env:
+  DEBUG: ${{ github.event.inputs.debug || false }}
+  USE_CACHE: true
+  DOCUMENTATION_CNAME: docs.pyvista.org
+  PYDEVD_DISABLE_FILE_VALIDATION: 1
+  PYVISTA_OFF_SCREEN: True
+  ALLOW_PLOTTING: true
+  SHELLOPTS: errexit:pipefail
+  pythonLocation: /opt/hostedtoolcache/Python/3.12.2/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.2/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.2/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.2/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.2/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.2/x64/lib
+  VERSION: 3
+  EXEC_INSTALL_SCRIPTS: false
+
+jobs:
+  regression_98_v2:
+    runs-on: ubuntu-latest
+    name: "Temporary test for PyVista doc cache failures (regression issue #98)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: awalsh128/cache-apt-pkgs-action@dev
+        with:
+          packages: libosmesa6-dev libgl1-mesa-dev python3-tk pandoc git-restore-mtime
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_106
+          debug: true
