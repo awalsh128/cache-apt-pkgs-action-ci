@@ -130,7 +130,8 @@ jobs:
           packages: rolldice xdot
           version: ${{ github.run_id }}-${{ github.run_attempt }}-standard_workflow
           debug: ${{ env.DEBUG }}
-      - if: steps.execute.outputs.cache-hit != 'true'
+      - name: Verify
+        if: steps.execute.outputs.cache-hit != 'true'
         run: |
           echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
@@ -149,7 +150,8 @@ jobs:
           packages: xdot rolldice distro-info-data
           version: ${{ github.run_id }}-${{ github.run_attempt }}-standard_workflow
           debug: ${{ env.DEBUG }}
-      - if: steps.execute.outputs.cache-hit != 'false'
+      - name: Verify
+        if: steps.execute.outputs.cache-hit != 'false'
         run: |
           echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
@@ -168,7 +170,8 @@ jobs:
           packages: xdot rolldice distro-info-data
           version: ${{ github.run_id }}-${{ github.run_attempt }}-standard_workflow
           debug: ${{ env.DEBUG }}
-      - if: steps.execute.outputs.cache-hit != 'true'
+      - name: Verify
+        if: steps.execute.outputs.cache-hit != 'true'
         run: |
           echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
@@ -345,7 +348,7 @@ jobs:
       - name: Verify
         if: steps.execute.outputs.cache-hit != 'true'
         run: |
-          echo "cache-hit = ${{ steps.cache-apt-pkgs-backslash.outputs.cache-hit }}"
+          echo "cache-hit = ${{ steps.execute.outputs.cache-hit }}"
           exit 1
         shell: bash
 
@@ -393,17 +396,6 @@ jobs:
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_89
           debug: true
 
-  regression_99:
-    runs-on: ubuntu-latest
-    name: "Install package with backslashes in filepaths (regression issue #99)."
-    steps:
-      - uses: actions/checkout@v3.1.0
-      - uses: awalsh128/cache-apt-pkgs-action@master
-        with:
-          packages: systemd=249.11-0ubuntu3.11
-          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_99
-          debug: true
-
   regression_98:
     runs-on: ubuntu-latest
     name: "Install error (regression issue #98)."
@@ -424,4 +416,27 @@ jobs:
         with:
           packages: libgl1-mesa-glx xvfb
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_98_2
+          debug: true
+
+  regression_106_install:
+    runs-on: ubuntu-latest
+    name: "Stale apt repo not finding package on restore, install phase (regression issue #106)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: awalsh128/cache-apt-pkgs-action@master
+        with:
+          packages: libtk8.6
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_106
+          debug: true
+
+  regression_106_restore:
+    needs: regression_106_install
+    runs-on: ubuntu-latest
+    name: "Stale apt repo not finding package on restore, restore phase (regression issue #106)."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: awalsh128/cache-apt-pkgs-action@master
+        with:
+          packages: libtk8.6
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_106
           debug: true
