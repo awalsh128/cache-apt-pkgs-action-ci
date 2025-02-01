@@ -28,7 +28,7 @@ fi
 packages=${@:2}
 [ "${packages}" ] || usage "No packages specified." 2
 
-sudo apt purge --yes ${apt_packages}
-sudo apt autoremove --yes ${apt_packages}
+sudo apt purge --yes ${packages}
+sudo apt autoremove --yes ${packages}
 
 time ../../cache-apt-pkgs-action/post_cache_action.sh "${cache_dir}" "${restore_dir}" ${cache_hit} ${execute_install_scripts} ${debug} ${packages}
