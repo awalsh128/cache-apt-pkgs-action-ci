@@ -435,3 +435,25 @@ jobs:
           packages: libtk8.6
           version: ${{ github.run_id }}-${{ github.run_attempt }}-regression_106
           debug: ${{ env.DEBUG }}
+
+  multi_arch_cache_key:
+    runs-on: ubuntu-latest
+    name: "Cache packages with multi-arch cache key."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
+        with:
+          packages: libfuse2
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-multi_arch_cache_key
+          debug: ${{ env.DEBUG }}
+
+  virtual_package:
+    runs-on: ubuntu-latest
+    name: "Cache virtual package."
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: awalsh128/cache-apt-pkgs-action@$branch$
+        with:
+          packages: libvips
+          version: ${{ github.run_id }}-${{ github.run_attempt }}-virtual_package
+          debug: ${{ env.DEBUG }}
